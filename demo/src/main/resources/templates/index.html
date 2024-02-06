@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en " xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>SiteCheck Pro</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <!-- Favicons -->
+    <link href="img1/favicon.png" rel="icon" />
+    <link href="img1/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+
+    <!-- Vendor CSS Files -->
+    <link href="vendor1/aos/aos.css" rel="stylesheet" />
+    <link href="vendor1/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="vendor1/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link href="vendor1/boxicons/css/boxicons.min.css" rel="stylesheet" />
+    <link href="vendor1/glightbox/css/glightbox.min.css" rel="stylesheet" />
+    <link href="vendor1/remixicon/remixicon.css" rel="stylesheet" />
+    <link href="vendor1/swiper/swiper-bundle.min.css" rel="stylesheet" />
+
+    <!-- Template Main CSS File -->
+    <link href="css1/style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top d-flex align-items-center">
+      <div class="container d-flex align-items-center justify-content-between">
+        <div class="logo">
+          <h1><a href="index.html">SiteCheck Pro</a></h1>
+          <!-- Uncomment below if you prefer to use an image logo -->
+          <!-- <a href="index.html"><img src="img1/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar">
+          <ul>
+            <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+
+            <li><a class="nav-link scrollto" href="#services">Services</a></li>
+
+            <li th:if="${user}">
+              <a th:href="@{/logout}" class="getstarted scrollto">Logout</a>
+            </li>
+
+            <div
+              th:if="${user != null}"
+              style="
+                text-align: center;
+                margin-left: 10px;
+                margin-top: 3px;
+                font-weight: bold;
+              "
+            >
+              Welcome Back <span th:text="${user.name}"></span>
+            </div>
+
+            <div th:unless="${user}" style="display: flex">
+              <a class="getstarted scrollto" href="/register">Signup</a>
+              <a
+                style="margin-left: 15px"
+                th:href="@{/login}"
+                class="getstarted scrollto"
+                >Login</a
+              >
+            </div>
+          </ul>
+          <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+        <!-- .navbar -->
+      </div>
+    </header>
+    <!-- End Header -->
+
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="d-flex align-items-center">
+      <div class="container">
+        <div class="row">
+          <div
+            class="col-lg-6 pt-5 pt-lg-0 order-2 order-lg-1 d-flex flex-column justify-content-center"
+          >
+            <h1 data-aos="fade-up">
+              Explore. Verify. Elevate. Your Web Odyssey
+            </h1>
+            <h2 data-aos="fade-up" data-aos-delay="400">
+              "Unleash the Power of Seamless Web Exploration: Check Sitemaps,
+              Verify URLs, and Monitor Status Codes – Your Essential Toolkit,
+              Accessible with Just a Login!"
+            </h2>
+            <div data-aos="fade-up" data-aos-delay="800">
+              <a href="#about" class="btn-get-started scrollto">Get Started</a>
+            </div>
+          </div>
+          <div
+            class="col-lg-6 order-1 order-lg-2 hero-img"
+            data-aos="fade-left"
+            data-aos-delay="200"
+          >
+            <img src="img1/hero-img.png" class="img-fluid animated" alt="" />
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Hero -->
+
+    <main id="main">
+      <!-- ======= Services Section ======= -->
+      <section id="services" class="services">
+        <div class="container">
+          <div class="section-title" data-aos="fade-up">
+            <h2>Services</h2>
+            <p>
+              SiteCheck Pro & LinkNavigator: Elevate Your Web Insights with Speed, Precision, and Versatility
+            </p>
+          </div>
+
+          <div class="row">
+            <div
+              class="col-md-6 col-lg-6 d-flex align-items-stretch mb-5 mb-lg-0"
+            >
+              <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
+                <div class="icon"><i class="bx bxl-dribbble"></i></div>
+                <h4 class="title">
+                  <a href="/SitemapChecker">Sitemap Checker</a>
+                </h4>
+                <p class="description">
+                  Your Ultimate Sitemap Checker! Boost your website exploration
+                  with lightning-fast efficiency. Enter your sitemap URL, set
+                  your desired number of threads, and watch as our tool
+                  meticulously verifies every URL, providing detailed insights
+                  into status codes. Easily download the comprehensive results
+                  in CSV or Excel format for seamless integration into your
+                  workflow
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="col-md-6 col-lg-6 d-flex align-items-stretch mb-5 mb-lg-0"
+            >
+              <div class="icon-box" data-aos="fade-up" data-aos-delay="200">
+                <div class="icon"><i class="bx bx-file"></i></div>
+                <h4 class="title">
+                  <a href="/WebsiteChecker"> Link Navigator</a>
+                </h4>
+                <p class="description">
+                  Presenting LinkNavigator: Seamlessly Navigate Website Health!
+                  Enter any website URL, set your preferred number of threads,
+                  and define the depth level of exploration. Choose level 0 for
+                  a quick check of the main page's status code or elevate to
+                  depth level 1 to inspect and verify the status codes of all
+                  embedded URLs within anchor tags.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- End Services Section -->
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" style="margin-top: 6%;">
+      <div class="container">
+        <div class="row d-flex align-items-center">
+          <div class="col-lg-6 text-lg-left text-center">
+            <div class="copyright">
+              &copy; Copyright <strong>SiteCheck Pro</strong>. All Rights
+              Reserved
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+              <a href="#intro" class="scrollto">Home</a>
+              <a href="#about" class="scrollto">About</a>
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Use</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    <!-- Vendor JS Files -->
+    <script src="vendor1/purecounter/purecounter_vanilla.js"></script>
+    <script src="vendor1/aos/aos.js"></script>
+    <script src="vendor1/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor1/glightbox/js/glightbox.min.js"></script>
+    <script src="vendor1/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="vendor1/swiper/swiper-bundle.min.js"></script>
+    <script src="vendor1/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="js1/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      .url-column {
+        width: 60%;
+      }
+
+      .pagination-container {
+        margin-top: 10px; /* Adjust the margin as needed */
+        width: 100%;
+      }
+      .form_div {
+        display: flex;
+        width: 100%;
+        padding-left: 5%;
+        padding-right: 5%;
+        box-sizing: border-box;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .form_div label {
+        margin-right: 5%;
+      }
+
+      .form_div input {
+        border: solid;
+        height: 20px;
+        border-radius: 5px;
+        border-width: 1px;
+      }
+
+      table {
+        width: 80%;
+        border-collapse: collapse;
+        border: 2px solid;
+      }
+
+      th,
+      td {
+        padding: 5px;
+        text-align: center;
+      }
+
+      table tr {
+        border-bottom: 2px solid;
+      }
+
+      .hidden_row {
+        border-bottom: hidden;
+        padding: 0;
+      }
+
+      td button {
+        padding: 5px;
+        border-width: 1px;
+        border-radius: 6px;
+        background-color: rgb(80, 80, 249);
+      }
+
+      td span {
+        font-weight: bold;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .hideBtn {
+        width: 50px;
+        background-color: blueviolet;
+      }
+
+      #loader {
+        border: 12px solid #c6c5c5;
+        border-radius: 50%;
+        border-top: 12px solid #444444;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>SiteMap Checker</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <!-- Favicons -->
+    <link href="img/favicon.png" rel="icon" />
+    <link href="img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+
+    <!-- Vendor CSS Files -->
+    <link href="vendor1/aos/aos.css" rel="stylesheet" />
+    <link href="vendor1/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="vendor1/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link href="vendor1/boxicons/css/boxicons.min.css" rel="stylesheet" />
+    <link href="vendor1/glightbox/css/glightbox.min.css" rel="stylesheet" />
+    <link href="vendor1/remixicon/remixicon.css" rel="stylesheet" />
+    <link href="vendor1/swiper/swiper-bundle.min.css" rel="stylesheet" />
+
+    <!-- Template Main CSS File -->
+    <link href="css1/style.css" rel="stylesheet" />
+
+    <!-- =======================================================
+  * Template Name: Vesperr
+  * Updated: Jan 29 2024 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/vesperr-free-bootstrap-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+  </head>
+
+  <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top d-flex align-items-center">
+      <div class="container d-flex align-items-center justify-content-between">
+        <div class="logo">
+          <h1>
+            <a href="/home"
+              >SiteCheck Pro<span style="color: darkblue">.</span></a
+            >
+          </h1>
+          <!-- Uncomment below if you prefer to use an image logo -->
+          <!-- <a href="index.html"><img src="img/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar">
+          <ul>
+            <li><a class="nav-link scrollto" href="/home">Home</a></li>
+
+            <li><a class="nav-link scrollto" href="#services">Services</a></li>
+
+            <li>
+              <a th:href="@{/logout}" class="getstarted scrollto">Logout</a>
+            </li>
+
+            <div
+              style="
+                text-align: center;
+                margin-left: 10px;
+                margin-top: 3px;
+                font-weight: bold;
+              "
+            >
+              Welcome Back <span th:text="${user.name}"></span>
+            </div>
+          </ul>
+          <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+        <!-- .navbar -->
+      </div>
+    </header>
+    <!-- End Header -->
+
+    <main id="main">
+      <!-- ======= Breadcrumbs Section ======= -->
+      <section class="breadcrumbs">
+        <div class="container">
+          <div class="d-flex justify-content-between align-items-center">
+            <h2>Sitemap Checker</h2>
+            <ol>
+              <li><a href="/home">Home</a></li>
+              <li>Sitemap Checker</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+      <!-- End Breadcrumbs Section -->
+
+      <section class="inner-page">
+        <div class="container">
+          <form
+            class="d-flex justify-content-center flex-column align-items-center"
+            style="width: 100%"
+          >
+            <div class="form-group col-lg-6">
+              <input
+                type="text"
+                class="form-control"
+                id="sitemapUrl"
+                name="sitemapUrl"
+                placeholder="Enter Sitemap Url"
+                onblur="addHttpsPrefix()"
+              />
+            </div>
+
+            <div
+              class="form-group col-lg-4 d-flex align-items-center flex-column mt-4"
+            >
+              <label for="Threads">Number of Threads</label>
+              <input
+                type="number"
+                class="form-control"
+                id="numThreads"
+                name="numThreads"
+                value="5"
+                required
+              />
+              <small
+                id="emailHelp"
+                class="form-text text-muted"
+                style="display: flex; align-items: center"
+                >Enter how many threads you want to run to check Urls
+                <button
+                  class="btn btn-secondary"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="The more threads you specify the more fastly your url will processed"
+                  style="
+                    padding: 0px;
+                    color: white;
+                    border: none;
+                    --bs-btn-hover-bg: white;
+                    --bs-btn-bg: white;
+                  "
+                >
+                  <img
+                    src="images/info.png"
+                    alt="Info Image "
+                    style="width: 20px; margin-left: 10px"
+                  />
+                </button>
+              </small>
+            </div>
+
+            <div class="d-flex mt-4">
+              <button type="submit" class="btn btn-primary">Submit</button>
+
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="stopProcessButton"
+                style="margin-left: 15px"
+              >
+                Stop Process
+              </button>
+
+              <a
+                th:href="@{/downloadCsv}"
+                class="btn btn-primary"
+                style="margin-left: 15px"
+                id="CsvButton"
+                >Download CSV</a
+              >
+            </div>
+          </form>
+
+          <div>
+            <div id="limitReached" class="mt-3 text-danger text-center">
+              Maximum limit of 1000 websites reached. Some URLs may not have
+              been checked. Limit will Reset at Midnight
+            </div>
+
+            <div id="process-stop" class="mt-3 text-danger text-center">
+              PROCESS HAS BEEN STOPPED
+            </div>
+
+            <div
+              id="UrlProcessing"
+              class="mt-3 text-danger text-center"
+              style="display: flex; justify-content: center"
+            >
+              <div>URLs ARE PROCESSING...</div>
+              <div id="loader" class=""></div>
+            </div>
+
+            <div id="error" class="mt-3 text-danger text-center"></div>
+          </div>
+          <div th:if="${errorInExcel}" class="mt-3 text-danger text-center">
+            <p>
+              Error in generating Excel file because you have not processed any
+              URLs yet.
+            </p>
+          </div>
+
+          <table class="table mt-5" id="statusTable">
+            <thead>
+              <tr style="text-align: center">
+                <th>Status</th>
+                <th>Count</th>
+                <th>View URLs</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-status-code="200">
+                <td>SUCCESS <span>(200)</span></td>
+                <td id="status200">0</td>
+                <td class="url-column">
+                  <div class="btn-group">
+                    <button class="btn btn-primary" onclick="updateUrls(this)">
+                      View URLs
+                    </button>
+                    <button
+                      class="btn btn-secondary hideBtn"
+                      onclick="hideDiv('url200')"
+                    >
+                      Hide
+                    </button>
+                  </div>
+
+                  <!-- The container to display fetched URLs -->
+                  <div
+                    id="url200"
+                    class="mt-3"
+                    style="display: none; width: 100%"
+                  >
+                    <h4>URLs with Status Code 200:</h4>
+                    <div
+                      class="pagination-container"
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                      "
+                    >
+                      <ul
+                        class="pagination justify-content-center"
+                        id="pagination200"
+                        style="display: flex; flex-wrap: wrap"
+                      ></ul>
+                      <div id="url200Content"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              <tr data-status-code="301">
+                <td>SUCCESS <span>(301)</span></td>
+                <td id="status301">0</td>
+                <td class="url-column">
+                  <div class="btn-group">
+                    <button class="btn btn-primary" onclick="updateUrls(this)">
+                      View URLs
+                    </button>
+                    <button
+                      class="btn btn-secondary hideBtn"
+                      onclick="hideDiv('url301')"
+                    >
+                      Hide
+                    </button>
+                  </div>
+
+                  <!-- The container to display fetched URLs -->
+                  <div
+                    id="url301"
+                    class="mt-3"
+                    style="display: none; width: 100%"
+                  >
+                    <h4>URLs with Status Code 301:</h4>
+                    <div class="pagination-container">
+                      <ul
+                        class="pagination justify-content-center"
+                        id="pagination301"
+                      ></ul>
+                      <div id="url301Content"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              <tr data-status-code="500">
+                <td>SUCCESS <span>(500)</span></td>
+                <td id="status500">0</td>
+                <td class="url-column">
+                  <div class="btn-group">
+                    <button class="btn btn-primary" onclick="updateUrls(this)">
+                      View URLs
+                    </button>
+                    <button
+                      class="btn btn-secondary hideBtn"
+                      onclick="hideDiv('url500')"
+                    >
+                      Hide
+                    </button>
+                  </div>
+
+                  <!-- The container to display fetched URLs -->
+                  <div
+                    id="url500"
+                    class="mt-3"
+                    style="display: none; width: 100%"
+                  >
+                    <h4>URLs with Status Code 500:</h4>
+                    <div class="pagination-container">
+                      <ul
+                        class="pagination justify-content-center"
+                        id="pagination500"
+                      ></ul>
+                      <div id="url500Content"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              <tr data-status-code="403">
+                <td>SUCCESS <span>(403)</span></td>
+                <td id="status403">0</td>
+                <td class="url-column">
+                  <div class="btn-group">
+                    <button class="btn btn-primary" onclick="updateUrls(this)">
+                      View URLs
+                    </button>
+                    <button
+                      class="btn btn-secondary hideBtn"
+                      onclick="hideDiv('url403')"
+                    >
+                      Hide
+                    </button>
+                  </div>
+
+                  <!-- The container to display fetched URLs -->
+                  <div
+                    id="url403"
+                    class="mt-3"
+                    style="display: none; width: 100%"
+                  >
+                    <h4>URLs with Status Code 403:</h4>
+                    <div class="pagination-container">
+                      <ul
+                        class="pagination justify-content-center"
+                        id="pagination403"
+                      ></ul>
+                      <div id="url403Content"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              <tr data-status-code="404">
+                <td>SUCCESS <span>(404)</span></td>
+                <td id="status404">0</td>
+                <td class="url-column">
+                  <div class="btn-group">
+                    <button class="btn btn-primary" onclick="updateUrls(this)">
+                      View URLs
+                    </button>
+                    <button
+                      class="btn btn-secondary hideBtn"
+                      onclick="hideDiv('url404')"
+                    >
+                      Hide
+                    </button>
+                  </div>
+
+                  <!-- The container to display fetched URLs -->
+                  <div
+                    id="url404"
+                    class="mt-3"
+                    style="display: none; width: 100%"
+                  >
+                    <h4>URLs with Status Code 404:</h4>
+                    <div class="pagination-container">
+                      <ul
+                        class="pagination justify-content-center"
+                        id="pagination404"
+                      ></ul>
+                      <div id="url404Content"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <!-- Repeat similar rows for other status codes -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+      <div class="container">
+        <div class="row d-flex align-items-center">
+          <div class="col-lg-6 text-lg-left text-center">
+            <div class="copyright">
+              &copy; Copyright <strong>SiteCheck Pro</strong>. All Rights
+              Reserved
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+              <a href="#intro" class="scrollto">Home</a>
+              <a href="#about" class="scrollto">About</a>
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Use</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+      var intervalId;
+
+      $("#limitReached").hide();
+      $("#UrlProcessing").hide();
+      $("#process-stop").hide();
+      $(".dialogBox").hide();
+      $("#error").hide();
+      $("#stopProcessButton").hide();
+      $("#CsvButton").hide();
+
+      function startInterval() {
+        // Clear any existing interval
+        clearInterval(intervalId);
+        // Start a new interval to fetch the score every 2 seconds
+        intervalId = setInterval(fetchScore, 3000);
+      }
+      // Capture the page beforeunload event
+      $(window).on("beforeunload", function (e) {
+        // Make an asynchronous AJAX call to the server to stop the process
+        $.ajax({
+          type: "POST",
+          url: "/stop-process",
+          async: true, // Use asynchronous request
+          success: function (response) {
+            console.log("Stop process call successful.");
+          },
+          error: function (error) {
+            console.error("Error stopping the process:", error);
+          },
+        });
+      });
+
+      $("#stopProcessButton").click(function () {
+        $.ajax({
+          type: "POST",
+          url: "/stop-process",
+          success: function (response) {
+            // Handle the success response
+            console.log(response);
+
+            // Access the "stopProcess" attribute from the response
+            if (response.stopProcess) {
+              clearInterval(intervalId);
+              $("#UrlProcessing").hide();
+              $("#process-stop").show();
+              setTimeout(fetchScore, 1000);
+            }
+          },
+          error: function (error) {
+            // Handle errors if needed
+            console.error(error);
+          },
+        });
+      });
+
+      function fetchScore() {
+        $.get("/score", function (data) {
+          console.log(data);
+
+          for (var statusCode in data.statusCounts) {
+            var statusCount = data.statusCounts[statusCode];
+            var statusElement = $("#status" + statusCode);
+
+            // Check if the status element exists in the current table
+            if (statusElement.length === 0) {
+              // If not, create a new table row dynamically
+              var newRow = $(
+                "<tr data-status-code='" +
+                  statusCode +
+                  "'>" +
+                  "<td>SUCCESS <span>(" +
+                  statusCode +
+                  ")</span></td>" +
+                  "<td id='status" +
+                  statusCode +
+                  "'>" +
+                  statusCount +
+                  "</td>" +
+                  "<td class='url-column'>" +
+                  "<div class='btn-group'>" +
+                  "<button class='btn btn-primary' onclick='updateUrls(this)'>" +
+                  "View URLs" +
+                  "</button>" +
+                  "<button class='btn btn-secondary hideBtn' onclick='hideDiv(\"url" +
+                  statusCode +
+                  "\")'>" +
+                  "Hide" +
+                  "</button>" +
+                  "</div>" +
+                  "<div id='url" +
+                  statusCode +
+                  "' class='mt-3' style='display: none; width: 100%'>" +
+                  "<h4>URLs with Status Code " +
+                  statusCode +
+                  ":</h4>" +
+                  "<div class='pagination-container'>" +
+                  "<ul class='pagination justify-content-center' id='pagination" +
+                  statusCode +
+                  "'></ul>" +
+                  "<div id='url" +
+                  statusCode +
+                  "Content'></div>" +
+                  "</div>" +
+                  "</div>" +
+                  "</td>" +
+                  "</tr>"
+              );
+
+              // Append the new row to the table
+              $("#statusTable").append(newRow);
+            } else {
+              // If the status element exists, update its content
+              statusElement.html("<span>" + statusCount + "</span>");
+            }
+          }
+
+          if (data.error) {
+            console.log("hello");
+            $("#error").text(data.error);
+            $("#error").show();
+            $("#UrlProcessing").hide();
+          }
+
+          if (data.limitReached) {
+            console.log("entered limit in ajax");
+            clearInterval(intervalId);
+            $("#UrlProcessing").hide();
+            $("#limitReached").show();
+          }
+          if (data.Idle) {
+            clearInterval(intervalId);
+            console.log("i am idle");
+          }
+
+          if (data.InProcess) {
+            $("#UrlProcessing").show();
+            $("#stopProcessButton").show();
+            $("#CsvButton").show();
+            $("#error").hide();
+          } else if (!data.InProcess) {
+            $("#UrlProcessing").hide();
+          }
+        });
+      }
+
+      $("form").submit(function (event) {
+        $("#status200").text("0");
+
+        $("#status301").text("0");
+
+        $("#status500").text("0");
+
+        $("#status403").text("0");
+
+        $("#status404").text("0");
+
+        $("#process-stop").hide();
+        $("#error").hide();
+
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        // Your existing logic to determine the action
+
+        // Set the action based on your logic
+
+        startInterval();
+        $("#limitReached").hide();
+        $.ajax({
+          type: "POST",
+          url: "/check-status",
+          data: $(this).serialize(),
+          success: function (response) {
+            // Handle the response if needed
+            console.log(response);
+
+            // You can update the page or perform other actions based on the response
+          },
+          error: function (error) {
+            // Handle errors if needed
+            console.error(error);
+          },
+        });
+      });
+
+      function addHttpsPrefix() {
+        var inputElement = document.getElementById("sitemapUrl");
+        var urlValue = inputElement.value.trim();
+
+        // Check if the value doesn't start with "http://" or "https://"
+        if (
+          !urlValue.startsWith("http://") &&
+          !urlValue.startsWith("https://")
+        ) {
+          // Add "https://" as the default prefix
+          inputElement.value = "https://" + urlValue;
+        }
+      }
+
+      // Your other JavaScript code here
+
+      function hideDiv(divId) {
+        var divToHide = document.getElementById(divId);
+        if (divToHide) {
+          divToHide.style.display = "none";
+          $(".dialogBox").hide();
+        }
+      }
+
+      function show(divId) {
+        var divToHide = document.getElementById(divId);
+        if (divToHide) {
+          divToHide.style.display = "block";
+        }
+      }
+      function showDialogBox(rowId) {
+        var dialogBox = $(rowId).find(".dialogBox");
+        dialogBox.show();
+      }
+
+      $("button[onclick^='fetchUrlsByStatusCode']").on("click", function () {
+        // Use the $(this) to reference the clicked button
+        showDialogBox($(this));
+        updateUrls($(this));
+      });
+
+      function showDialogBox(clickedButton) {
+        var closestRow = clickedButton.closest("tr");
+        var rowId = closestRow.attr("id").replace("row", ""); // Extract row id
+        var dialogBox = closestRow.find(".dialogBox");
+        dialogBox.show();
+      }
+      function showPagination(totalItems, container, statusCode) {
+        var paginationContainer = $("#pagination" + statusCode);
+        paginationContainer.html(""); // Clear previous pagination
+
+        var itemsPerPage = 100;
+        var totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        console.log("Total Items:", totalItems);
+        console.log("Items Per Page:", itemsPerPage);
+        console.log("Calculated Total Pages:", totalPages);
+
+        // Ensure at least one page is displayed
+        totalPages = Math.max(1, totalPages);
+
+        for (var i = 1; i <= totalPages; i++) {
+          var listItem = $(
+            "<li class='page-item'><a class='page-link' href='#'>" +
+              i +
+              "</a></li>"
+          );
+          paginationContainer.append(listItem);
+        }
+
+        // Handle pagination click event using event delegation
+        paginationContainer.on("click", ".page-link", function (event) {
+          event.preventDefault();
+          var page = $(this).text();
+          paginateUrls(page, statusCode, container);
+        });
+      }
+
+      function displayUrlsWithPagination(urls, container) {
+        container.html("<div>");
+
+        for (var i = 0; i < urls.length; i++) {
+          container.append(
+            '<a style="display:block" href="' +
+              urls[i] +
+              '">' +
+              urls[i] +
+              "</a>"
+          );
+        }
+
+        container.append("</div>");
+      }
+
+      function paginateUrls(page, statusCode, container) {
+        var itemsPerPage = 100;
+        var startIndex = (page - 1) * itemsPerPage;
+        var endIndex = startIndex + itemsPerPage;
+
+        // Perform the actual AJAX call to get URLs from the server
+        $.get("/urls/" + statusCode, function (data) {
+          show("url" + statusCode);
+          var urlContainer = $("#url" + statusCode + "Content");
+
+          // Display URLs with pagination
+          displayUrlsWithPagination(
+            data.slice(startIndex, endIndex),
+            urlContainer
+          );
+        });
+      }
+
+      function updateUrls(clickedButton) {
+        var closestRow = $(clickedButton).closest("tr");
+        var statusCode = closestRow.data("status-code");
+
+        // Perform the actual AJAX call to get URLs from the server
+        $.get("/urls/" + statusCode, function (data) {
+          show("url" + statusCode);
+          var urlContentContainer = $("#url" + statusCode + "Content");
+
+          // Show pagination after fetching data
+          showPagination(data.length, urlContentContainer, statusCode);
+
+          // Display the first page
+          paginateUrls(1, statusCode, urlContentContainer);
+        });
+      }
+      function showDialogBox(clickedButton) {
+        var closestRow = clickedButton.closest("tr");
+        var rowId = closestRow.attr("id").replace("row", ""); // Extract row id
+        var dialogBox = closestRow.find(".dialogBox");
+        dialogBox.show();
+      }
+
+      // Attach a change event listener to the dropdown
+      $(".linkLimit").change(function () {
+        // Use the $(this) to reference the changed dropdown
+        updateUrls($(this));
+      });
+    </script>
+  </body>
+</html>
