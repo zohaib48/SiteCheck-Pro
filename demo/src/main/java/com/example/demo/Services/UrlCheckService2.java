@@ -82,7 +82,8 @@ public class UrlCheckService2 {
             System.out.print("Limit reached");
             session.setAttribute("limitReached", true);
         }
-
+        
+        session.setAttribute("Idle", true);
     
         return "statusCode";
     }

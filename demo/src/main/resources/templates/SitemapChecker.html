@@ -148,7 +148,7 @@
           <ul>
             <li><a class="nav-link scrollto" href="/home">Home</a></li>
 
-            <li><a class="nav-link scrollto" href="#services">Services</a></li>
+         
 
             <li>
               <a th:href="@{/logout}" class="getstarted scrollto">Logout</a>
@@ -244,7 +244,8 @@
             </div>
 
             <div class="d-flex mt-4">
-              <button type="submit" class="btn btn-primary">Submit</button>
+             
+              <button id="submitButton" type="submit" class="btn btn-primary">Submit</button>
 
               <button
                 type="button"
@@ -565,6 +566,7 @@
               clearInterval(intervalId);
               $("#UrlProcessing").hide();
               $("#process-stop").show();
+              $("#submitButton").show();
               setTimeout(fetchScore, 1000);
             }
           },
@@ -651,14 +653,17 @@
           }
           if (data.Idle) {
             clearInterval(intervalId);
+            $("#submitButton").show();
             console.log("i am idle");
           }
 
           if (data.InProcess) {
+            $("#submitButton").hide();
             $("#UrlProcessing").show();
             $("#stopProcessButton").show();
             $("#CsvButton").show();
             $("#error").hide();
+         
           } else if (!data.InProcess) {
             $("#UrlProcessing").hide();
           }
