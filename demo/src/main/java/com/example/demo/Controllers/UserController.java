@@ -162,6 +162,6 @@ private String getVerificationLink(HttpServletRequest request, String verificati
         }
 
 
-        return "WebSiteChecker";
+        return "WebsiteChecker";
     }
 }
