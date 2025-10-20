@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -21,11 +21,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
     private final DataSource dataSource; // Inject DataSource for persistent token storage
+    private final PasswordEncoder passwordEncoder;
 
   
-    public SecurityConfig(UserService userService, DataSource dataSource) {
+    public SecurityConfig(UserService userService, DataSource dataSource, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.dataSource = dataSource;
+        this.passwordEncoder = passwordEncoder;
     }
 
   @Override
@@ -60,14 +62,9 @@ protected void configure(HttpSecurity http) throws Exception {
 
   
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     @Override
     protected void configure(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
 
     // Define a custom persistent token repository using JDBC
