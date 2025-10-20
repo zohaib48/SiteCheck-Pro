@@ -1,0 +1,27 @@
+databases:
+  - name: sitecheck-pro-db
+    databaseName: sitemap
+    plan: free
+
+services:
+  - type: web
+    name: sitecheck-pro
+    runtime: java
+    buildCommand: ./demo/mvnw -f demo/pom.xml -DskipTests package
+    startCommand: java -Dserver.port=$PORT -jar demo/target/demo-0.0.1-SNAPSHOT.jar
+    autoDeploy: true
+    envVars:
+      - key: JAVA_VERSION
+        value: 17
+      - key: JDBC_DATABASE_URL
+        fromDatabase:
+          name: sitecheck-pro-db
+          property: jdbcConnectionString
+      - key: JDBC_DATABASE_USERNAME
+        fromDatabase:
+          name: sitecheck-pro-db
+          property: user
+      - key: JDBC_DATABASE_PASSWORD
+        fromDatabase:
+          name: sitecheck-pro-db
+          property: password

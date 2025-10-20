@@ -1,6 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:
+th="http://www.thymeleaf.org">
   <head>
+    <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+  ></script>
+  <script
+    nomodule
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+  ></script>
     <style>
       * {
         padding: 0;
@@ -77,6 +86,8 @@
         background-color: blueviolet;
       }
 
+     
+
       #loader {
         border: 12px solid #c6c5c5;
         border-radius: 50%;
@@ -91,6 +102,35 @@
           transform: rotate(360deg);
         }
       }
+
+      
+.tooltips {
+  position: absolute;
+  font-size: 12px;
+  left: 20px;
+  background-color: black;
+  padding: 5px;
+  color: lightgrey;
+  border-color: white;
+  border: solid;
+  border-width: 1px;
+  opacity: 0;
+  transition-duration: 0.2s;
+  z-index: 100;
+  white-space: nowrap;
+}
+.tooltip-icon {
+  position: relative;
+  color: black;
+  font-size: 24px;
+  margin-left: 5px;
+  margin-top: 5px;
+
+}
+.tooltip-icon:hover .tooltips {
+  opacity: 1;
+}
+
     </style>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -147,8 +187,6 @@
         <nav id="navbar" class="navbar">
           <ul>
             <li><a class="nav-link scrollto" href="/home">Home</a></li>
-
-         
 
             <li>
               <a th:href="@{/logout}" class="getstarted scrollto">Logout</a>
@@ -221,31 +259,17 @@
                 class="form-text text-muted"
                 style="display: flex; align-items: center"
                 >Enter how many threads you want to run to check Urls
-                <button
-                  class="btn btn-secondary"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="The more threads you specify the more fastly your url will processed"
-                  style="
-                    padding: 0px;
-                    color: white;
-                    border: none;
-                    --bs-btn-hover-bg: white;
-                    --bs-btn-bg: white;
-                  "
-                >
-                  <img
-                    src="images/info.png"
-                    alt="Info Image "
-                    style="width: 20px; margin-left: 10px"
-                  />
-                </button>
+                <div class="tooltip-icon">
+                  <ion-icon name="help-circle-outline"></ion-icon>
+                  <div class="tooltips">The more threads you specify the more fastly your url will processed </div>
+                </div>
               </small>
             </div>
 
             <div class="d-flex mt-4">
-             
-              <button id="submitButton" type="submit" class="btn btn-primary">Submit</button>
+              <button id="submitButton" type="submit" class="btn btn-primary">
+                Submit
+              </button>
 
               <button
                 type="button"
@@ -567,7 +591,7 @@
               $("#UrlProcessing").hide();
               $("#process-stop").show();
               $("#submitButton").show();
-              setTimeout(fetchScore, 1000);
+              setTimeout(fetchScore, 2000);
             }
           },
           error: function (error) {
@@ -663,43 +687,36 @@
             $("#stopProcessButton").show();
             $("#CsvButton").show();
             $("#error").hide();
-         
           } else if (!data.InProcess) {
             $("#UrlProcessing").hide();
           }
         });
       }
 
-      $("form").submit(function (event) {
+      $("#submitButton").click(function (event) {
+        // Prevent the default button click behavior
+        event.preventDefault();
+
         $("#status200").text("0");
-
         $("#status301").text("0");
-
         $("#status500").text("0");
-
         $("#status403").text("0");
-
         $("#status404").text("0");
-
         $("#process-stop").hide();
         $("#error").hide();
 
-        event.preventDefault(); // Prevent the default form submission behavior
-
         // Your existing logic to determine the action
-
-        // Set the action based on your logic
 
         startInterval();
         $("#limitReached").hide();
+
         $.ajax({
           type: "POST",
           url: "/check-status",
-          data: $(this).serialize(),
+          data: $("form").serialize(),
           success: function (response) {
             // Handle the response if needed
             console.log(response);
-
             // You can update the page or perform other actions based on the response
           },
           error: function (error) {
@@ -708,6 +725,8 @@
           },
         });
       });
+
+      // Submit event handler for the form
 
       function addHttpsPrefix() {
         var inputElement = document.getElementById("sitemapUrl");
@@ -836,8 +855,11 @@
           // Display the first page
           paginateUrls(1, statusCode, urlContentContainer);
         });
-      }
-      function showDialogBox(clickedButton) {
+         }
+
+
+         
+         function showDialogBox(clickedButton) {
         var closestRow = clickedButton.closest("tr");
         var rowId = closestRow.attr("id").replace("row", ""); // Extract row id
         var dialogBox = closestRow.find(".dialogBox");

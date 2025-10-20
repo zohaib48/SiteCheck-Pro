@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
+    <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+  ></script>
+  <script
+    nomodule
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+  ></script>
     <style>
       * {
         padding: 0;
@@ -85,6 +93,33 @@
         height: 20px;
         animation: spin 1s linear infinite;
       }
+      .tooltips {
+        position: absolute;
+        font-size: 12px;
+        left: 20px;
+        background-color: black;
+        padding: 5px;
+        color: lightgrey;
+        border-color: white;
+        border: solid;
+        border-width: 1px;
+        opacity: 0;
+        transition-duration: 0.2s;
+        z-index: 100;
+        white-space: nowrap !important;
+      }
+      .tooltip-icon {
+        position: relative;
+        color: black;
+        font-size: 24px;
+        margin-left: 5px;
+        margin-top: 5px;
+      
+      }
+      .tooltip-icon:hover .tooltips {
+        opacity: 1;
+      }
+      
 
       @keyframes spin {
         100% {
@@ -221,25 +256,10 @@
                 class="form-text text-muted"
                 style="display: flex; align-items: center"
                 >Enter how many threads you want to run to check Urls
-                <button
-                  class="btn btn-secondary"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="The more threads you specify the more fastly your url will processed"
-                  style="
-                    padding: 0px;
-                    color: white;
-                    border: none;
-                    --bs-btn-hover-bg: white;
-                    --bs-btn-bg: white;
-                  "
-                >
-                  <img
-                    src="images/info.png"
-                    alt="Info Image "
-                    style="width: 20px; margin-left: 10px"
-                  />
-                </button>
+                <div class="tooltip-icon">
+                  <ion-icon name="help-circle-outline"></ion-icon>
+                  <div class="tooltips" >The more threads you specify the more fastly your url will processed </div>
+                </div>
               </small>
 
               <label style="margin-top: 4%" for="depthLevel"
@@ -260,25 +280,12 @@
                 class="form-text text-muted"
                 style="display: flex; align-items: center"
                 >Specify Depth lvl for Processing
-                <button
-                  class="btn btn-secondary"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="0 depth lvl to check the current url , 1 depth level to check the embedded urls inside that url "
-                  style="
-                    padding: 0px;
-                    color: white;
-                    border: none;
-                    --bs-btn-hover-bg: white;
-                    --bs-btn-bg: white;
-                  "
-                >
-                  <img
-                    src="images/info.png"
-                    alt="Info Image "
-                    style="width: 20px; margin-left: 10px"
-                  />
-                </button>
+
+                <div class="tooltip-icon">
+                  <ion-icon name="help-circle-outline"></ion-icon>
+                  <div class="tooltips" >0 depth lvl to check the current url , 1 depth level to check the embedded urls inside that url </div>
+                </div>
+             
               </small>
             </div>
 

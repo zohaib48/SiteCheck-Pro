@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "users")
 public class User {
-    public static final int MAX_WEBSITES_TO_CHECK = 500;
+    public static final int MAX_WEBSITES_TO_CHECK = 1000;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

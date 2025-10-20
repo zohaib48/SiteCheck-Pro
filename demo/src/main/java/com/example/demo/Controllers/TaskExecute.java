@@ -26,13 +26,13 @@ public class TaskExecute {
 
     private final Map<String, ReentrantLock> sessionLocks = new ConcurrentHashMap<>();
 
-    public static final int MAX_CONCURRENT_REQUESTS = 1;
+    public static final int MAX_CONCURRENT_REQUESTS = 10;
     public static final int QUEUE_CAPACITY = 4; // Set your desired queue capacity
 
     public TaskExecute() {
         this.taskExecutor = new ThreadPoolTaskExecutor();
-        this.taskExecutor.setCorePoolSize(1); // Set your desired core pool size
-        this.taskExecutor.setMaxPoolSize(1); // Set your desired max pool size
+        this.taskExecutor.setCorePoolSize(10); // Set your desired core pool size
+        this.taskExecutor.setMaxPoolSize(10); // Set your desired max pool size
         this.taskExecutor.setQueueCapacity(QUEUE_CAPACITY); // Set your desired max pool size
         this.taskExecutor.initialize();
     }
