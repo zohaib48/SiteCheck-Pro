@@ -11,10 +11,18 @@ services:
     envVars:
       - key: JAVA_VERSION
         value: 17
-      - key: JDBC_DATABASE_URL
+      - key: DB_HOST
         fromDatabase:
           name: sitecheck-pro-db
-          property: jdbcConnectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: sitecheck-pro-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: sitecheck-pro-db
+          property: database
       - key: JDBC_DATABASE_USERNAME
         fromDatabase:
           name: sitecheck-pro-db
