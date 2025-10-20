@@ -6,9 +6,7 @@ databases:
 services:
   - type: web
     name: sitecheck-pro
-    runtime: java
-    buildCommand: ./demo/mvnw -f demo/pom.xml -DskipTests package
-    startCommand: java -Dserver.port=$PORT -jar demo/target/demo-0.0.1-SNAPSHOT.jar
+    runtime: docker
     autoDeploy: true
     envVars:
       - key: JAVA_VERSION
